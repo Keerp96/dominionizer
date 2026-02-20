@@ -161,6 +161,7 @@ export class DataFixture {
         return {
             expansions: this.createExpansions(),
             specialCardsCount: this.createSpecialCardsCount(),
+            manualKingdomCards: [],
             ...configuration,
         };
     }

@@ -61,11 +61,17 @@ export class ShuffleService {
     }
 
     private pickRandomSet(randomizableCards: RandomizableCards, configuration: Configuration): Set {
-        const kingdomCards = this.pickRandomCards(
-            randomizableCards.kingdomCards,
-            configuration.expansions,
-            10,
-        );
+        const kingdomCards =
+            configuration.manualKingdomCards.length > 0
+                ? this.pickManualCards(
+                      randomizableCards.kingdomCards,
+                      configuration.manualKingdomCards,
+                  )
+                : this.pickRandomCards(
+                      randomizableCards.kingdomCards,
+                      configuration.expansions,
+                      10,
+                  );
         const containsCardOfTypeLiaison = this.containsCardOfType(kingdomCards, CardTypeId.Liaison);
         const allies: Card[] = containsCardOfTypeLiaison
             ? this.pickRandomCards(randomizableCards.allies, configuration.expansions, 1, [])
@@ -213,6 +219,15 @@ export class ShuffleService {
         return cards.some((card: Card) =>
             card.types.some((cardType: CardType) => cardType.id === cardTypeId),
         );
+    }
+
+    private pickManualCards(candidates: Card[], names: string[]): Card[] {
+        return names
+            .map((name: string) => name.trim())
+            .map((name: string) =>
+                candidates.find((card: Card) => card.name.toLowerCase() === name.toLowerCase()),
+            )
+            .filter((card): card is Card => card !== undefined);
     }
 
     private pickRandomCards(

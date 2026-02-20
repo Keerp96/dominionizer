@@ -4,4 +4,5 @@ import { SpecialCardsCount } from './special-cards-count';
 export interface Configuration {
     expansions: Expansion[];
     specialCardsCount: SpecialCardsCount;
+    manualKingdomCards: string[];
 }

@@ -12,6 +12,7 @@ import {
 import { MatStepper } from '@angular/material/stepper';
 import { ExpansionSelectStubComponent } from 'src/testing/components/expansion-select.stub.component';
 import { SpecialCardSelectStubComponent } from 'src/testing/components/special-card-select.stub.component';
+import { ManualKingdomCardSelectStubComponent } from 'src/testing/components/manual-kingdom-card-select.stub.component';
 import { ExpansionService } from 'src/app/services/expansion.service';
 import { ConfigurationService } from 'src/app/services/configuration.service';
 import { DataFixture } from 'src/testing/data-fixture';
@@ -31,6 +32,7 @@ import { Card } from 'src/app/models/card';
 import { MatIconHarness } from '@angular/material/icon/testing';
 import { ExpansionSelectComponent } from '../expansion-select/expansion-select.component';
 import { SpecialCardSelectComponent } from '../special-card-select/special-card-select.component';
+import { ManualKingdomCardSelectComponent } from '../manual-kingdom-card-select/manual-kingdom-card-select.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 
@@ -64,6 +66,7 @@ describe('ConfigurationComponent', () => {
                         'isCardTypeAvailable',
                         'updateExpansions',
                         'updateSpecialCardsCount',
+                        'updateManualKingdomCards',
                     ]),
                 },
                 {
@@ -72,8 +75,20 @@ describe('ConfigurationComponent', () => {
                 },
             ],
         }).overrideComponent(ConfigurationComponent, {
-            remove: { imports: [ExpansionSelectComponent, SpecialCardSelectComponent] },
-            add: { imports: [ExpansionSelectStubComponent, SpecialCardSelectStubComponent] },
+            remove: {
+                imports: [
+                    ExpansionSelectComponent,
+                    SpecialCardSelectComponent,
+                    ManualKingdomCardSelectComponent,
+                ],
+            },
+            add: {
+                imports: [
+                    ExpansionSelectStubComponent,
+                    SpecialCardSelectStubComponent,
+                    ManualKingdomCardSelectStubComponent,
+                ],
+            },
         });
 
         dataFixture = new DataFixture();
@@ -300,11 +315,14 @@ describe('ConfigurationComponent', () => {
                 .query(By.directive(SpecialCardSelectStubComponent))
                 .injector.get(SpecialCardSelectStubComponent);
 
-            const actual = fixture.debugElement
+            const steps = fixture.debugElement
                 .query(By.directive(MatStepper))
-                .injector.get(MatStepper).steps.last;
+                .injector.get(MatStepper).steps;
+            const actual = steps.find((step) => step.stepControl === specialCardSelect.formGroup);
 
-            expect(actual.stepControl).withContext('stepControl').toBe(specialCardSelect.formGroup);
+            expect(actual?.stepControl)
+                .withContext('stepControl')
+                .toBe(specialCardSelect.formGroup);
         });
 
         it('should bind properties of SpecialCardSelectComponent correctly', () => {

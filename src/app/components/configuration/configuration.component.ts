@@ -15,6 +15,7 @@ import { RouterLink } from '@angular/router';
 import { MatFabButton } from '@angular/material/button';
 import { SpecialCardSelectComponent } from '../special-card-select/special-card-select.component';
 import { ExpansionSelectComponent } from '../expansion-select/expansion-select.component';
+import { ManualKingdomCardSelectComponent } from '../manual-kingdom-card-select/manual-kingdom-card-select.component';
 import { AsyncPipe } from '@angular/common';
 import { MatStepper, MatStep, MatStepLabel } from '@angular/material/stepper';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
@@ -34,6 +35,7 @@ export interface SpecialCardSelectViewData {
     imports: [
         ExpansionSelectComponent,
         SpecialCardSelectComponent,
+        ManualKingdomCardSelectComponent,
         MatStepper,
         MatStep,
         MatStepLabel,
@@ -54,6 +56,8 @@ export class ConfigurationComponent implements OnInit {
 
     expansionSelectViewData$ = new Observable<ExpansionSelectViewData>();
     specialCardSelectViewData$ = new Observable<SpecialCardSelectViewData | null>();
+    manualKingdomCardsInitialValue: string[] =
+        ConfigurationService.defaultConfiguration.manualKingdomCards;
 
     ngOnInit(): void {
         this.appBarService.updateConfiguration({
