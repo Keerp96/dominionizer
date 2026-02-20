@@ -1,0 +1,16 @@
+<form [formGroup]="formGroup">
+    <mat-form-field appearance="outline" class="full-width">
+        <mat-label i18n>Kingdom Cards (optional)</mat-label>
+        <textarea
+            matInput
+            formControlName="cardNames"
+            rows="4"
+            i18n-placeholder
+            placeholder="Village, Smithy, Market, ..."
+        ></textarea>
+        <mat-hint i18n
+            >Enter a comma-separated list of card names to use instead of random
+            generation</mat-hint
+        >
+    </mat-form-field>
+</form>

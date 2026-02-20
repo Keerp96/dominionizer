@@ -185,6 +185,42 @@ describe('ShuffleService', () => {
             expect(set.kingdomCards).toEqual(expected);
         });
 
+        it('with manual kingdom cards configured should use those cards instead of random selection', () => {
+            const manualCards = kingdomCards.slice(0, 3);
+            configuration.manualKingdomCards = manualCards.map((card: Card) => card.name);
+            shuffleService = TestBed.inject(ShuffleService);
+            getTestScheduler().flush();
+
+            shuffleService.shuffleSet();
+            const set = setServiceSpy.updateSet.calls.first().args[0];
+
+            expect(set.kingdomCards).toEqual(manualCards);
+            expect(chanceServiceSpy.pickCards).not.toHaveBeenCalledWith(jasmine.anything(), 10);
+        });
+
+        it('with manual kingdom cards configured should match card names case-insensitively', () => {
+            const targetCard = kingdomCards[0];
+            configuration.manualKingdomCards = [targetCard.name.toUpperCase()];
+            shuffleService = TestBed.inject(ShuffleService);
+            getTestScheduler().flush();
+
+            shuffleService.shuffleSet();
+            const set = setServiceSpy.updateSet.calls.first().args[0];
+
+            expect(set.kingdomCards).toEqual([targetCard]);
+        });
+
+        it('with manual kingdom cards that do not match any card should return empty kingdom cards', () => {
+            configuration.manualKingdomCards = ['NonExistentCard'];
+            shuffleService = TestBed.inject(ShuffleService);
+            getTestScheduler().flush();
+
+            shuffleService.shuffleSet();
+            const set = setServiceSpy.updateSet.calls.first().args[0];
+
+            expect(set.kingdomCards).toEqual([]);
+        });
+
         (
             [
                 ['events', () => events],

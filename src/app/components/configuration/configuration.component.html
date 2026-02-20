@@ -30,6 +30,15 @@
                 ></app-special-card-select>
             </mat-step>
         }
+        <mat-step>
+            <ng-template matStepLabel>
+                <span class="white-space-normal" i18n>Kingdom Cards (optional)</span>
+            </ng-template>
+            <app-manual-kingdom-card-select
+                [initialValue]="manualKingdomCardsInitialValue"
+                (valueChange)="configurationService.updateManualKingdomCards($event)"
+            ></app-manual-kingdom-card-select>
+        </mat-step>
     </mat-stepper>
 
     <div class="stepper-actions">

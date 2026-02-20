@@ -23,6 +23,7 @@ export class ConfigurationService {
             ways: 0,
             traits: 0,
         },
+        manualKingdomCards: [],
     };
 
     private configurationSubject = new BehaviorSubject<Configuration>(
@@ -44,6 +45,12 @@ export class ConfigurationService {
     updateSpecialCardsCount(count: SpecialCardsCount): void {
         const configuration = this.configurationSubject.value;
         configuration.specialCardsCount = count;
+        this.configurationSubject.next(configuration);
+    }
+
+    updateManualKingdomCards(names: string[]): void {
+        const configuration = this.configurationSubject.value;
+        configuration.manualKingdomCards = names;
         this.configurationSubject.next(configuration);
     }
 
